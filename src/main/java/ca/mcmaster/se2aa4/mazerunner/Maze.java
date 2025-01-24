@@ -115,5 +115,22 @@ public class Maze {
         return new int[]{endX, endY};
     }
 
+    // Checks to see if the runner can move forward (no wall ahead)
+    public boolean canMoveForward(int x, int y, char direction) {
+        int nextX = x;
+        int nextY = y;
+
+        switch (direction) {
+            case 'E' -> nextY++;
+            case 'W' -> nextY--;
+            case 'N' -> nextX--;
+            case 'S' -> nextX++;
+        }
+        if (nextX >= 0 && nextX < maze[0].length && nextY >= 0 && nextY < maze.length) {
+            return maze[nextX][nextY] == ' ';
+        }
+        else return false;
+            
+    }
 }
 

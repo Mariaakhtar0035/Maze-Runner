@@ -7,8 +7,11 @@ public class Runner {
     private static final Logger logger = LogManager.getLogger();
     private int x, y;
     private char direction;
+    private Maze maze;
+
 
     public Runner(Maze maze) {
+        this.maze = maze;
         this.x = maze.getEntryCoords()[0];
         this.y = maze.getEntryCoords()[1];
         this.direction = 'E';
@@ -57,4 +60,37 @@ public class Runner {
             case 'S' -> direction = 'N';
         }
     }
+
+    public void validatePath(String pathSequence) {
+        OUTER:
+        for (int i = 0; i < pathSequence.length(); i++) {
+            char move = pathSequence.charAt(i);
+            
+            switch (move) {
+                case 'F' -> {
+                    if (!maze.canMoveForward(x, y, direction)) {
+                        logger.info("Can't move forward");
+                        break OUTER;
+                    } else {
+                        moveForward();
+                        logger.info("Moving forward: " + x + " " + y);
+                    }
+                }
+                case 'R' -> {
+                    turnRight();
+                    logger.info("Turning Right: " + x + " " + y);
+                }
+                case 'L' -> {
+                    turnLeft();
+                    logger.info("Turning Left: " + x + " " + y);
+                }
+                default -> logger.error("Invalid Symbol");
+            }
+        }
+ 
+        if (x == maze.getExitCoords()[0] && y == maze.getExitCoords()[1]) System.out.println("correct path");
+        else System.out.println("incorrect path");
+     
+    }
+
 }
