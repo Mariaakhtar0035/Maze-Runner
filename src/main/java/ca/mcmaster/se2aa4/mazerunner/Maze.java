@@ -35,6 +35,7 @@ public class Maze {
                 rows++;
             }
 
+
             reader.close(); 
             logger.info(rows);
             logger.info(cols);
@@ -106,4 +107,13 @@ public class Maze {
         return new int[]{endX, endY};
     }
 
+    public int[] getEntryCoords() {
+        return new int[]{startX, startY};
+    }
+
+    public int[] getExitCoords() {
+        return new int[]{endX, endY};
+    }
+
 }
+

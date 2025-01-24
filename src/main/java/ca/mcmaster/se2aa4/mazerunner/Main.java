@@ -26,8 +26,10 @@ public class Main {
                 logger.info("creating maze");
                 Maze maze = new Maze();
                 maze.loadMaze(mazeFile);
+                maze.printMaze();
                 maze.findEntry();
                 maze.findExit();
+                Runner runner = new Runner(maze);
             }
             
         } catch(Exception e) {
