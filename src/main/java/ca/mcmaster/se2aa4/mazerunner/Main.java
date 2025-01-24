@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -23,21 +20,15 @@ public class Main {
 
         try {
             CommandLine cmd = parser.parse(options, args);
-            String mazeFile = cmd.getOptionValue("i");
 
-            logger.info("Reading the maze from file " + mazeFile);
-            BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        logger.info("WALL ");
-                    } else if (line.charAt(idx) == ' ') {
-                        logger.info("PASS ");
-                    }
-                }
-                System.out.print(System.lineSeparator());
+            if (cmd.hasOption('i')) {
+                String mazeFile = cmd.getOptionValue("i");
+                logger.info("creating maze");
+                Maze maze = new Maze();
+                maze.loadMaze(mazeFile);
+                maze.printMaze();
             }
+            
         } catch(Exception e) {
             logger.error("/!\\ An error has occured /!\\");
         }
