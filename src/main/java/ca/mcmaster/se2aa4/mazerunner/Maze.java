@@ -8,11 +8,15 @@ import org.apache.logging.log4j.Logger;
 
 
 public class Maze {
-    private static final Logger logger = LogManager.getLogger();// Initialize Logger
+    private static final Logger logger = LogManager.getLogger();
 
     private char[][] maze;
     private int rows;
     private int cols;
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
 
     public void loadMaze(String mazeFile) {
         try {
@@ -68,4 +72,38 @@ public class Maze {
         }
 
     }
+
+    // Finds entry point on west end 
+    public int[] findEntry() {
+        for (int i = 0; i < rows; i++) {
+            if (maze[i][0] == ' ') {
+                startX = i;
+                startY = 0;
+                break;
+            }
+        }
+
+        logger.info(startX);
+        logger.info(startY);
+
+        return new int[]{startX, startY};
+
+    }
+
+    // Finds exit point on east end 
+    public int[] findExit() {
+        for (int i = rows - 1; i >= 0; i--) {
+            if (maze[i][cols - 1] == ' ') {
+                endX = i;
+                endY = cols - 1;
+                break;
+            }
+        }
+
+        logger.info(endX);
+        logger.info(endY);
+
+        return new int[]{endX, endY};
+    }
+
 }
