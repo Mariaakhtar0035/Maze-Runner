@@ -30,7 +30,7 @@ public class Main {
                 maze.findExit();
 
                 Runner runner = new Runner(maze);
-                runner.validatePath("FFFLFFFFRFFF"); // Correct sequence for tiny maze (test)
+                runner.validatePath("FFF L FFFF R FFF"); // Correct sequence for tiny maze (test)
             }
             
         } catch(Exception e) {

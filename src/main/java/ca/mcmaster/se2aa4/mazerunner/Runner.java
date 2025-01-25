@@ -61,6 +61,7 @@ public class Runner {
         }
     }
 
+    // Validates path in canonical form 
     public void validatePath(String pathSequence) {
         OUTER:
         for (int i = 0; i < pathSequence.length(); i++) {
@@ -83,6 +84,9 @@ public class Runner {
                 case 'L' -> {
                     turnLeft();
                     logger.info("Turning Left: " + x + " " + y);
+                }
+                case ' ' -> {
+                    continue;
                 }
                 default -> logger.error("Invalid Symbol");
             }
