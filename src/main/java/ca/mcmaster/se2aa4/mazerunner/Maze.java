@@ -35,10 +35,7 @@ public class Maze {
                 rows++;
             }
 
-
             reader.close(); 
-            logger.info(rows);
-            logger.info(cols);
             
             reader = new BufferedReader(new FileReader(mazeFile));
             maze = new char[rows][cols];
@@ -84,9 +81,6 @@ public class Maze {
             }
         }
 
-        logger.info(startX);
-        logger.info(startY);
-
         return new int[]{startX, startY};
 
     }
@@ -100,9 +94,6 @@ public class Maze {
                 break;
             }
         }
-
-        logger.info(endX);
-        logger.info(endY);
 
         return new int[]{endX, endY};
     }
