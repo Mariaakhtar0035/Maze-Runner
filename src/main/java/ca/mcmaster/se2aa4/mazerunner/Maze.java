@@ -17,8 +17,16 @@ public class Maze {
     private int startY;
     private int endX;
     private int endY;
+    private Runner runner;
 
-    public void loadMaze(String mazeFile) {
+    public void intializeMaze(String mazeFile) {
+        loadMaze(mazeFile);
+        findEntry();
+        findExit();
+
+    }
+
+    private void loadMaze(String mazeFile) {
         try {
             logger.info("Reading the maze from file " + mazeFile);
             BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
@@ -59,7 +67,7 @@ public class Maze {
     }
 
     // Helper method for debugging 
-    public void printMaze() {
+    private void printMaze() {
         // Print each char in the file
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -72,7 +80,7 @@ public class Maze {
     }
 
     // Finds entry point on west end 
-    public int[] findEntry() {
+    private void findEntry() {
         for (int i = 0; i < rows; i++) {
             if (maze[i][0] == ' ') {
                 startX = i;
@@ -80,13 +88,10 @@ public class Maze {
                 break;
             }
         }
-
-        return new int[]{startX, startY};
-
     }
 
     // Finds exit point on east end 
-    public int[] findExit() {
+    private void findExit() {
         for (int i = rows - 1; i >= 0; i--) {
             if (maze[i][cols - 1] == ' ') {
                 endX = i;
@@ -94,8 +99,6 @@ public class Maze {
                 break;
             }
         }
-
-        return new int[]{endX, endY};
     }
 
     public int[] getEntryCoords() {
@@ -117,10 +120,9 @@ public class Maze {
             case 'N' -> nextX--;
             case 'S' -> nextX++;
         }
-        if (nextX >= 0 && nextX < maze[0].length && nextY >= 0 && nextY < maze.length) {
-            return maze[nextX][nextY] == ' ';
-        }
-        else return false;
+        return nextX >= 0 && nextX < rows &&
+           nextY >= 0 && nextY < cols &&
+           maze[nextX][nextY] == ' ';
             
     }
 }

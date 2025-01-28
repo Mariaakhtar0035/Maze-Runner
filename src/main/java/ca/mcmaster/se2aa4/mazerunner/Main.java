@@ -27,10 +27,8 @@ public class Main {
                 logger.info("creating maze");
                 Maze maze = new Maze();
                 Path path = new Path();
-                maze.loadMaze(mazeFile);
-                maze.findEntry();
-                maze.findExit();
-                Runner runner = new Runner(maze);
+                maze.intializeMaze(mazeFile);
+                Runner runner = new Runner(maze, path);
 
                 if (cmd.hasOption("p")) {
                     String pathSequence = cmd.getOptionValue("p");
