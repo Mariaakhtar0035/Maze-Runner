@@ -35,8 +35,10 @@ public class Main {
                     runner.validatePath(pathSequence);
                 }
                 else {
+                    runner.computePath();
                     logger.info("**** Computing path");
                     logger.info("PATH NOT COMPUTED");
+                    path.outputPathCanonical();
                 }
                 
             }

@@ -64,15 +64,6 @@ public class Runner {
         }
     }
 
-    private void turnAround() {
-        switch (direction) {
-            case 'E' -> direction = 'W';
-            case 'W' -> direction = 'E';
-            case 'N' -> direction = 'S';
-            case 'S' -> direction = 'N';
-        }
-    }
-
     // Validates path in canonical or factorized form 
     public void validatePath(String pathSequence) {
         int moveInt = 1;
@@ -119,6 +110,45 @@ public class Runner {
         if (x == maze.getExitCoords()[0] && y == maze.getExitCoords()[1]) System.out.println("correct path");
         else System.out.println("incorrect path");
      
+    }
+
+    // Generates a path using the right-hand algorithm
+    public void computePath() {
+        while (x != endX || y != endY) {
+            if (maze.canTurnRight(x, y, direction)) {
+                logger.info("Turning Right: " + x + " " + y);
+                turnRight();
+                path.addInstruction('R');
+                if (maze.canMoveForward(x, y, direction)) {
+                    moveForward();
+                    path.addInstruction('F');
+                }
+            }
+            else if (maze.canMoveForward(x, y, direction)) {
+                logger.info("Moving forward: " + x + " " + y);
+                moveForward();
+                path.addInstruction('F');
+            }
+            else if (maze.canTurnLeft(x, y, direction)) {
+                logger.info("Turning Left: " + x + " " + y);
+                turnLeft();
+                path.addInstruction('L');
+                if (maze.canMoveForward(x, y, direction)) {
+                    moveForward();
+                    path.addInstruction('F');
+                }
+            }
+            else {
+                logger.info("Turning Around: " + x + " " + y);
+                turnRight();
+                path.addInstruction('R');
+                turnRight();
+                path.addInstruction('R');
+            }
+
+        }
+
+        logger.info("Runner has reached the exit: " + x + " " + y);
     }
 
 }

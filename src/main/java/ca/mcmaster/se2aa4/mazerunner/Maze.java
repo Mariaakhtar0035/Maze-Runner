@@ -17,7 +17,6 @@ public class Maze {
     private int startY;
     private int endX;
     private int endY;
-    private Runner runner;
 
     public void intializeMaze(String mazeFile) {
         loadMaze(mazeFile);
@@ -124,6 +123,32 @@ public class Maze {
            nextY >= 0 && nextY < cols &&
            maze[nextX][nextY] == ' ';
             
+    }
+
+    public boolean canTurnRight(int x, int y, char direction) {
+        // Simulate a right turn 
+        char newDirection = switch (direction) {
+            case 'N' -> 'E';
+            case 'E' -> 'S';
+            case 'S' -> 'W';
+            case 'W' -> 'N';
+            default -> direction; 
+        };
+
+        return canMoveForward(x, y, newDirection);
+    }
+
+    public boolean canTurnLeft(int x, int y, char direction) {
+        // Simulate a left turn
+        char newDirection = switch (direction) {
+            case 'E' -> 'N';
+            case 'W' -> 'S';
+            case 'N' -> 'W';
+            case 'S' -> 'E';
+            default -> direction; 
+        };
+
+        return canMoveForward(x, y, newDirection);
     }
 }
 
