@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,8 +14,8 @@ public class Maze {
     private char[][] maze;
     private int rows;
     private int cols;
-    private int startX;
-    private int startY;
+    private int startX = -1;
+    private int startY = -1;
     private int endX;
     private int endY;
 
@@ -23,15 +24,42 @@ public class Maze {
         findEntry();
         findExit();
 
+        if (startX == -1 || endX == -1) {
+            logger.error("Maze entry or exit not found.");
+        }
     }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int[] getEntryCoords() {
+        return new int[]{startX, startY};
+    }
+
+    public int[] getExitCoords() {
+        return new int[]{endX, endY};
+    }
+
+    public boolean isPass(int x, int y) {
+        return maze[x][y] == ' ';
+    }
+
 
     private void loadMaze(String mazeFile) {
         try {
-            logger.info("Reading the maze from file " + mazeFile);
             BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
 
             // Read the first line to get the # of columns 
             String line = reader.readLine();
+
+            if (line == null) {
+                logger.error("Maze file is empty.");
+            }
 
             // Start rows at 1 since the first line has already been read
             rows = 1;
@@ -57,25 +85,11 @@ public class Maze {
             }
 
             reader.close(); 
-            logger.info("Maze loaded successfully");
 
-        } catch(Exception e) {
+        } catch(IOException e) {
             logger.error("/!\\ An error has occured /!\\");
         }
         
-    }
-
-    // Helper method for debugging 
-    private void printMaze() {
-        // Print each char in the file
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                System.out.print(maze[i][j]);
-            }
-            // Print a newline after each row
-            System.out.println();
-        }
-
     }
 
     // Finds entry point on west end 
@@ -98,57 +112,6 @@ public class Maze {
                 break;
             }
         }
-    }
-
-    public int[] getEntryCoords() {
-        return new int[]{startX, startY};
-    }
-
-    public int[] getExitCoords() {
-        return new int[]{endX, endY};
-    }
-
-    // Checks to see if the runner can move forward (no wall ahead)
-    public boolean canMoveForward(int x, int y, char direction) {
-        int nextX = x;
-        int nextY = y;
-
-        switch (direction) {
-            case 'E' -> nextY++;
-            case 'W' -> nextY--;
-            case 'N' -> nextX--;
-            case 'S' -> nextX++;
-        }
-        return nextX >= 0 && nextX < rows &&
-           nextY >= 0 && nextY < cols &&
-           maze[nextX][nextY] == ' ';
-            
-    }
-
-    public boolean canTurnRight(int x, int y, char direction) {
-        // Simulate a right turn 
-        char newDirection = switch (direction) {
-            case 'N' -> 'E';
-            case 'E' -> 'S';
-            case 'S' -> 'W';
-            case 'W' -> 'N';
-            default -> direction; 
-        };
-
-        return canMoveForward(x, y, newDirection);
-    }
-
-    public boolean canTurnLeft(int x, int y, char direction) {
-        // Simulate a left turn
-        char newDirection = switch (direction) {
-            case 'E' -> 'N';
-            case 'W' -> 'S';
-            case 'N' -> 'W';
-            case 'S' -> 'E';
-            default -> direction; 
-        };
-
-        return canMoveForward(x, y, newDirection);
     }
 }
 
