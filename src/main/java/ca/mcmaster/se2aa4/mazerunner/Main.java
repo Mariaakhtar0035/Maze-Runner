@@ -1,3 +1,8 @@
+/**
+ * Main class for the Maze Runner program.
+ * This program reads a maze from a file, initializes it, and either validates a provided path
+ * or computes a path through the maze using the right-hand rule algorithm.
+ */
 package ca.mcmaster.se2aa4.mazerunner;
 
 import org.apache.commons.cli.CommandLine;
@@ -15,17 +20,20 @@ public class Main {
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner **");
 
+        // Parse command-line arguments
         CommandLine cmd = parseCommandLine(args);
         if (cmd == null) {
             logger.error("Failed to parse command-line arguments.");
             return;
         }
 
+        // Check if the user has provided a path to the maze file
         if (!cmd.hasOption("i")) {
             logger.error("Missing required option: -i (Path to the maze file)");
             return;
         }
 
+        // Get the maze file path from the command-line arguments
         String mazeFile = cmd.getOptionValue("i");
         Maze maze = initializeMaze(mazeFile);
         if (maze == null) return;
@@ -33,6 +41,7 @@ public class Main {
         Runner runner = new Runner(maze);
         Path path = new Path();
 
+        // If a path sequence is provided, validate it; otherwise, compute a path
         if (cmd.hasOption("p")) {
             validatePath(cmd.getOptionValue("p"), runner);
         } else {
@@ -43,6 +52,12 @@ public class Main {
     }
     
 
+    /**
+     * Parses the command-line arguments using Apache Commons CLI.
+     * 
+     * @param args Command-line arguments passed to the program.
+     * @return CommandLine object containing parsed arguments, or null if parsing fails.
+     */
     private static CommandLine parseCommandLine(String[] args) {
         Options options = new Options();
         options.addOption("i", true, "Path to the maze file");
@@ -57,6 +72,12 @@ public class Main {
         }
     }
 
+    /**
+     * Initializes the maze from the specified file.
+     * 
+     * @param mazeFile Path to the maze file.
+     * @return Initialized Maze object, or null if initialization fails.
+     */
     private static Maze initializeMaze(String mazeFile) {
         try {
             logger.info("Initializing maze from file: {}", mazeFile);
@@ -69,6 +90,13 @@ public class Main {
         }
     }
 
+    
+    /**
+     * Validates the provided path sequence against the maze.
+     * 
+     * @param pathSequence The path sequence to validate.
+     * @param runner The Runner object used to navigate the maze.
+     */
     private static void validatePath(String pathSequence, Runner runner) {
         try {
             logger.info("Validating provided path sequence: {}", pathSequence);
@@ -79,6 +107,14 @@ public class Main {
         }
     }
 
+
+    /**
+     * Computes a path through the maze using the right-hand rule algorithm.
+     * 
+     * @param maze The Maze object representing the maze.
+     * @param path The Path object to store the computed path.
+     * @param runner The Runner object used to navigate the maze.
+     */
     private static void computePath(Maze maze, Path path, Runner runner) {
         try {
             logger.info("Computing path...");

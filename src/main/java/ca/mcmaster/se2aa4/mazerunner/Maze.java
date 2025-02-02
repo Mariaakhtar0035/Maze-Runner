@@ -1,3 +1,7 @@
+/**
+ * Maze class represents a maze loaded from a file.
+ * It provides functionality to load the maze, find entry and exit points, and check if a cell is passable.
+ */
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.io.BufferedReader;
@@ -24,6 +28,7 @@ public class Maze {
         findEntry();
         findExit();
 
+        // Log an error if the entry or exit points are not found
         if (startX == -1 || endX == -1) {
             logger.error("Maze entry or exit not found.");
         }
@@ -50,6 +55,11 @@ public class Maze {
     }
 
 
+    /**
+     * Loads the maze from a file into a 2D array.
+     *
+     * @param mazeFile Path to the maze file.
+     */
     private void loadMaze(String mazeFile) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
@@ -92,7 +102,9 @@ public class Maze {
         
     }
 
-    // Finds entry point on west end 
+    /**
+     * Finds the entry point of the maze on the west side (first column).
+     */
     private void findEntry() {
         for (int i = 0; i < rows; i++) {
             if (maze[i][0] == ' ') {
@@ -103,7 +115,9 @@ public class Maze {
         }
     }
 
-    // Finds exit point on east end 
+    /**
+     * Finds the exit point of the maze on the east side (last column).
+     */
     private void findExit() {
         for (int i = rows - 1; i >= 0; i--) {
             if (maze[i][cols - 1] == ' ') {
@@ -114,4 +128,3 @@ public class Maze {
         }
     }
 }
-
