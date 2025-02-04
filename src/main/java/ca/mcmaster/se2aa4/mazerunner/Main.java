@@ -120,7 +120,7 @@ public class Main {
             logger.info("Computing path...");
             RightHandSolver rightHandSolver = new RightHandSolver(maze, path, runner);
             rightHandSolver.computePath();
-            path.outputPathCanonical();
+            path.outputPathFactorized();
         } catch (Exception e) {
             logger.error("Error computing path: {}", e.getMessage());
         }

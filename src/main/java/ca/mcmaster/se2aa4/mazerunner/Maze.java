@@ -7,6 +7,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +52,10 @@ public class Maze {
     }
 
     public boolean isPass(int x, int y) {
+        if (x < 0 || x >= rows || y < 0 || y >= cols) {
+            logger.error("Attempted to access out-of-bounds index: (" + x + ", " + y + ")");
+            return false; 
+        }
         return maze[x][y] == ' ';
     }
 
@@ -61,46 +66,45 @@ public class Maze {
      * @param mazeFile Path to the maze file.
      */
     private void loadMaze(String mazeFile) {
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
-
-            // Read the first line to get the # of columns 
-            String line = reader.readLine();
-
-            if (line == null) {
-                logger.error("Maze file is empty.");
-            }
-
-            // Start rows at 1 since the first line has already been read
-            rows = 1;
-            cols = line.length();
-            
-            // Iterate through the rest of the lines to get the # of rows
-            while ((reader.readLine()) != null) {
-                rows++;
-            }
-
-            reader.close(); 
-            
             reader = new BufferedReader(new FileReader(mazeFile));
-            maze = new char[rows][cols];
-            int currentRow = 0;
 
-            // Read each line and fill the maze array
+            String line;
+
+            // load all rows and determine the maximum column size (longest row)
+            ArrayList<String> lines = new ArrayList<>();
+            int maxCols = 0;
+
             while ((line = reader.readLine()) != null) {
-                for (int col = 0; col < cols; col++) {
-                    maze[currentRow][col] = line.charAt(col);
-                }
-                currentRow++;
+                lines.add(line);
+                maxCols = Math.max(maxCols, line.length());
             }
 
-            reader.close(); 
+            rows = lines.size();
+            cols = maxCols;
+            maze = new char[rows][cols];
 
-        } catch(IOException e) {
-            logger.error("/!\\ An error has occured /!\\");
-        }
-        
-    }
+            // Fill maze with padded rows
+            for (int i = 0; i < rows; i++) {
+                String currentLine = lines.get(i);
+                // Pad the current row with spaces if it's shorter than the longest row
+                for (int j = 0; j < cols; j++) {
+                    if (j < currentLine.length()) {
+                        maze[i][j] = currentLine.charAt(j);
+                    } else {
+                        maze[i][j] = ' '; 
+                    }
+                }
+            }
+
+            logger.info("Maze loaded: " + rows + "x" + cols);
+
+        } catch (IOException e) {
+            logger.error("Error loading maze", e);
+        } 
+}
+    
 
     /**
      * Finds the entry point of the maze on the west side (first column).
