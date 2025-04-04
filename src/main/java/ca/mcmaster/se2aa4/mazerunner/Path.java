@@ -23,7 +23,7 @@ public class Path {
      * The canonical format is a space-separated sequence of instructions.
      * For example, "F F R F".
      */
-    public void outputPathCanonical() {
+    public String outputPathCanonical() {
         char currentInstruction = sequence.get(0);
 
         for (char instruction : sequence) {
@@ -37,6 +37,7 @@ public class Path {
         }
         
         System.out.println(pathCanonical);
+        return pathCanonical;
 
     }
 
@@ -45,7 +46,7 @@ public class Path {
      * The factorized format compresses repeated instructions with counts.
      * For example, "2F R F".
      */
-    public void outputPathFactorized() {
+    public String outputPathFactorized() {
         char currentInstruction = sequence.get(0);
         int count = 0;
 
@@ -64,9 +65,10 @@ public class Path {
 
         // Add the last instruction and its count to the factorized path
         if (count != 1 ) pathFactorized += count;
-        pathFactorized = pathFactorized + currentInstruction + " ";
+        pathFactorized = pathFactorized + currentInstruction;
         
         System.out.println(pathFactorized);
+        return pathFactorized;
         
     } 
     

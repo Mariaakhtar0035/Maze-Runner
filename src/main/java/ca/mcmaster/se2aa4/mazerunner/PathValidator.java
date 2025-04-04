@@ -20,7 +20,7 @@ public class PathValidator {
         this.runner = runner;
     }
 
-    public void validatePath(String pathSequence) {
+    public String validatePath(String pathSequence) {
         int moveCount = 1;
     
         // Iterate through each character in the path sequence
@@ -46,5 +46,12 @@ public class PathValidator {
     
         // Check if the runner has reached the exit 
         System.out.println((runner.getX() == runner.getEndX() && runner.getY() == runner.getEndY()) ? "Correct path" : "Incorrect path");
+
+        if (runner.getX() == runner.getEndX() && runner.getY() == runner.getEndY()) {
+            return "Correct path";
+        }
+        else {
+            return "Incorrect path";
+        }
     }
 }

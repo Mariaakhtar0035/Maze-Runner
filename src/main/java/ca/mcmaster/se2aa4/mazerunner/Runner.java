@@ -24,6 +24,7 @@ public class Runner {
 
     // Getters for the runner's current state
     public char getDirection() { return direction; }
+    public void setDirection(char direction) {this.direction = direction;}
     public int getX() { return x; }
     public int getY() { return y; }
     public int getEndX() { return endX; }

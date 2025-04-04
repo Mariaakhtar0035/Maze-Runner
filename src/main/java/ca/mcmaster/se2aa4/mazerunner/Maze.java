@@ -24,15 +24,18 @@ public class Maze {
     private int endX;
     private int endY;
 
-    public void intializeMaze(String mazeFile) {
+    public boolean intializeMaze(String mazeFile) {
         loadMaze(mazeFile);
         findEntry();
         findExit();
 
         // Log an error if the entry or exit points are not found
-        if (startX == -1 || endX == -1) {
+        if (!findEntry() || !findExit()) {
             logger.error("Maze entry or exit not found.");
+            return false;
         }
+
+        return true;
     }
 
     public int getRows() {
@@ -109,26 +112,30 @@ public class Maze {
     /**
      * Finds the entry point of the maze on the west side (first column).
      */
-    private void findEntry() {
+    protected boolean findEntry() {
         for (int i = 0; i < rows; i++) {
             if (maze[i][0] == ' ') {
                 startX = i;
                 startY = 0;
-                break;
+                return true;
             }
         }
+
+        return false;
     }
 
     /**
      * Finds the exit point of the maze on the east side (last column).
      */
-    private void findExit() {
+    protected boolean findExit() {
         for (int i = rows - 1; i >= 0; i--) {
             if (maze[i][cols - 1] == ' ') {
                 endX = i;
                 endY = cols - 1;
-                break;
+                return true;
             }
         }
+
+        return false;
     }
 }
