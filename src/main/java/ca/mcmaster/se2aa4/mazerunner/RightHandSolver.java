@@ -12,9 +12,18 @@ public class RightHandSolver implements MazeSolver {
     private Path path;
     private Runner runner;
 
+    protected final Command moveForward;
+    protected final Command turnRight;
+    protected final Command turnLeft;
+    
+
     public RightHandSolver(Maze maze, Path path, Runner runner) {
         this.path = path;
         this.runner = runner;
+
+        this.moveForward = new MoveForward(runner);
+        this.turnRight = new TurnRight(runner);
+        this.turnLeft = new TurnLeft(runner);
     }
 
 
@@ -26,14 +35,17 @@ public class RightHandSolver implements MazeSolver {
     @Override
     public void computePath() {
         while (!isAtExit()) {
-            if (canTurnRight()) {
-                turnRight();
-            } else if (canMoveForward()) {
-                moveForward();
-            } else if (canTurnLeft()) {
-                turnLeft();
+            if (turnRight.canExecute()) {
+                executeCommand(turnRight, 'R');
+                executeCommand(moveForward, 'F');
+            } else if (moveForward.canExecute()) {
+                executeCommand(moveForward, 'F');
+            } else if (turnLeft.canExecute()) {
+                executeCommand(turnLeft, 'L');
+                executeCommand(moveForward, 'F');
             } else {
-                turnAround();
+                executeCommand(turnRight, 'R'); 
+                executeCommand(turnRight, 'R'); // 180-degree turn
             }
         }
 
@@ -41,63 +53,14 @@ public class RightHandSolver implements MazeSolver {
     }
 
 
-    /**
-     * Checks if the runner has reached the exit, can turn right or left, or move forward in the current position.
-     *
-     * @return True if the runner can perform the action, false otherwise.
-     */
     private boolean isAtExit() {
         return runner.getX() == runner.getEndX() && runner.getY() == runner.getEndY();
     }
 
-    private boolean canTurnRight() {
-        return runner.canTurnRight(runner.getX(), runner.getY(), runner.getDirection());
-    }
-
-    private boolean canMoveForward() {
-        return runner.canMoveForward(runner.getX(), runner.getY(), runner.getDirection());
-    }
-
-    private boolean canTurnLeft() {
-        return runner.canTurnLeft(runner.getX(), runner.getY(), runner.getDirection());
-    }
-
-
-
-    /**
-     * Turns the runner left or right, or moves the runner forward and updates the path.
-     */
-    private void turnLeft() {
-        logger.info("Turning Left: " + runner.getX() + " " + runner.getY());
-        runner.turnLeft();
-        path.addInstruction('L');
-        moveForward();
-    }
-
-    private void turnRight() {
-        logger.info("Turning Right: " + runner.getX() + " " + runner.getY());
-        runner.turnRight();
-        path.addInstruction('R');
-        moveForward();
-    }
-
-    private void moveForward() {
-        if (canMoveForward()) {
-            logger.info("Moving forward: " + runner.getX() + " " + runner.getY());
-            runner.moveForward();
-            path.addInstruction('F');
+    private void executeCommand(Command command, char instruction) {
+        if (command.execute()) {
+            path.addInstruction(instruction);
         }
-    }
-
-    /**
-     * Turns the runner around (180 degrees) by simulating two right turns and updates the path.
-     */
-    private void turnAround() {
-        logger.info("Turning Around: " + runner.getX() + " " + runner.getY());
-        runner.turnRight();
-        path.addInstruction('R');
-        runner.turnRight();
-        path.addInstruction('R');
-    }
+    }  
 }
 

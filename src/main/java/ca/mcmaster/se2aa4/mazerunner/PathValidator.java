@@ -16,8 +16,16 @@ package ca.mcmaster.se2aa4.mazerunner;
 public class PathValidator {
     private final Runner runner;
 
+    protected final Command moveForward;
+    protected final Command turnRight;
+    protected final Command turnLeft;
+
     public PathValidator(Runner runner) {
         this.runner = runner;
+
+        this.moveForward = new MoveForward(runner);
+        this.turnRight = new TurnRight(runner);
+        this.turnLeft = new TurnLeft(runner);
     }
 
     public String validatePath(String pathSequence) {
@@ -34,11 +42,11 @@ public class PathValidator {
     
             for (int i = 0; i < moveCount; i++) {
                 if (move == 'F') {
-                    runner.moveForward();
+                    moveForward.execute();
                 } else if (move == 'R') {
-                    runner.turnRight();
+                    turnRight.execute();
                 } else if (move == 'L') {
-                    runner.turnLeft();
+                    turnLeft.execute();
                 }
             }
             moveCount = 1;

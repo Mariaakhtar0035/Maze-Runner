@@ -27,7 +27,8 @@ public class MovementTest {
         maze.intializeMaze("examples/straight.maz.txt");
         Runner runner = new Runner(maze);
         int initialY = runner.getY();
-        runner.moveForward();
+        MoveForward moveForward = new MoveForward(runner);
+        moveForward.execute();
         assertEquals(initialY + 1, runner.getY()); 
     }
 
@@ -39,7 +40,8 @@ public class MovementTest {
         Runner runner = new Runner(maze);
         int initialY = runner.getY();
         runner.setDirection('W');
-        runner.moveForward();
+        MoveForward moveForward = new MoveForward(runner);
+        moveForward.execute();
         assertEquals(initialY - 1, runner.getY()); 
     }
 
@@ -51,7 +53,8 @@ public class MovementTest {
         Runner runner = new Runner(maze);
         int initialX = runner.getX();
         runner.setDirection('N');
-        runner.moveForward();
+        MoveForward moveForward = new MoveForward(runner);
+        moveForward.execute();
         assertEquals(initialX - 1, runner.getX()); 
     }
 
@@ -63,7 +66,8 @@ public class MovementTest {
         Runner runner = new Runner(maze);
         int initialX = runner.getX();
         runner.setDirection('S');
-        runner.moveForward();
+        MoveForward moveForward = new MoveForward(runner);
+        moveForward.execute();
         assertEquals(initialX + 1, runner.getX()); 
     }
 
@@ -74,7 +78,8 @@ public class MovementTest {
         maze.intializeMaze("examples/small.maz.txt");
         Runner runner = new Runner(maze);
         runner.setDirection('N'); 
-        runner.turnRight();
+        TurnRight turnRight = new TurnRight(runner);
+        turnRight.execute();
         assertEquals('E', runner.getDirection());
     }
 
@@ -85,7 +90,8 @@ public class MovementTest {
         maze.intializeMaze("examples/small.maz.txt");
         Runner runner = new Runner(maze);
         runner.setDirection('N'); 
-        runner.turnLeft();
+        TurnLeft turnLeft = new TurnLeft(runner);
+        turnLeft.execute();
         assertEquals('W', runner.getDirection());
     }
 
