@@ -7,23 +7,11 @@ package ca.mcmaster.se2aa4.mazerunner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RightHandSolver implements MazeSolver {
+public class RightHandSolver extends AbstractMazeSolver {
     private static final Logger logger = LogManager.getLogger();
-    private Path path;
-    private Runner runner;
-
-    protected final Command moveForward;
-    protected final Command turnRight;
-    protected final Command turnLeft;
-    
 
     public RightHandSolver(Maze maze, Path path, Runner runner) {
-        this.path = path;
-        this.runner = runner;
-
-        this.moveForward = new MoveForward(runner);
-        this.turnRight = new TurnRight(runner);
-        this.turnLeft = new TurnLeft(runner);
+        super(maze, path, runner);
     }
 
 
@@ -33,7 +21,7 @@ public class RightHandSolver implements MazeSolver {
      * and turning left or around as a last resort.
      */
     @Override
-    public void computePath() {
+    public void determineNextMove() {
         while (!isAtExit()) {
             if (turnRight.canExecute()) {
                 executeCommand(turnRight, 'R');
@@ -51,16 +39,6 @@ public class RightHandSolver implements MazeSolver {
 
         logger.info("Runner has reached the exit: " + runner.getX() + " " + runner.getY());
     }
-
-
-    private boolean isAtExit() {
-        return runner.getX() == runner.getEndX() && runner.getY() == runner.getEndY();
-    }
-
-    private void executeCommand(Command command, char instruction) {
-        if (command.execute()) {
-            path.addInstruction(instruction);
-        }
-    }  
+  
 }
 

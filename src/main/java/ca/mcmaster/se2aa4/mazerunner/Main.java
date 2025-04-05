@@ -118,8 +118,8 @@ public class Main {
     private static void computePath(Maze maze, Path path, Runner runner) {
         try {
             logger.info("Computing path...");
-            RightHandSolver rightHandSolver = new RightHandSolver(maze, path, runner);
-            rightHandSolver.computePath();
+            AbstractMazeSolver solver = new RightHandSolver(maze, path, runner);
+            solver.computePath();
             path.outputPathFactorized();
         } catch (Exception e) {
             logger.error("Error computing path: {}", e.getMessage());
